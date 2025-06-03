@@ -1,0 +1,1 @@
+# Predicting-FashionMNIST-dataset-classes-using-a-simple-neural-network
