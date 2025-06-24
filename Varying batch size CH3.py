@@ -1,11 +1,13 @@
 from torch.utils.data import Dataset, DataLoader
+from torchvision import datasets
 import torch
 import torch.nn as nn
 import numpy as np
 import matplotlib.pyplot as plt
-%matplotlib inline
+import random
+import matplotlib.ticker as mticker
 device = "cuda" if torch.cuda.is_available() else "cpu"
-from torchvision import datasets
+
 data_folder = '~/data/FMNIST' # This can be any directory you want to 
 # download FMNIST to
 fmnist = datasets.FashionMNIST(data_folder, download=True, train=True)
@@ -35,7 +37,7 @@ def get_model(input_dim=784, lr=1e-2):
                 nn.Linear(1000, 10)
             ).to(device)
     loss_func = nn.CrossEntropyLoss()
-    from torch.optim import SGD, Adam
+    from torch.optim import SGD # , Adam
     optimizer = SGD(model.parameters(), lr)
     return model, optimizer, loss_func
 
@@ -101,10 +103,7 @@ for epoch in range(5):
     val_accuracies.append(val_epoch_accuracy)
 
 epochs = np.arange(5)+1
-import matplotlib.ticker as mtick
-import matplotlib.pyplot as plt
-import matplotlib.ticker as mticker
-%matplotlib inline
+
 plt.subplot(211)
 plt.plot(epochs, train_losses, 'bo', label='Training loss')
 plt.plot(epochs, val_losses, 'r', label='Validation loss')
@@ -147,7 +146,7 @@ for ix, batch in enumerate(iter(Data)):
     break # Break the outer loop after processing the first batch
 
 classes = fmnist.classes
-import random
+
 rand = int(random.random()*1000)
 image = val_images[rand,:,:].float()  # shape (1, 28, 28)
 with torch.no_grad():
